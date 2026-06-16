@@ -83,3 +83,25 @@ INSERT INTO order_items (order_id, product_id, quantity, unit_price)
 	VALUES (LAST_INSERT_ID(), 1, 17, 79.99);
 SELECT product_id, name, stock_quantity FROM products WHERE product_id = 1;
 ROLLBACK; -- There should be 117 and 100 for two SELECTs in result
+
+-- 8.Create a View to get monthly revenue of a chosen year
+DROP VIEW IF EXISTS monthly_revenue;
+CREATE VIEW IF NOT EXISTS monthly_revenue AS
+(
+	SELECT 
+		MONTH(o.ordered_at) AS months,
+		SUM(oi.quantity * oi.unit_price) AS month_revenue
+	FROM orders o
+	JOIN order_items oi
+		USING (order_id)
+        WHERE 
+			YEAR(o.ordered_at) = 2024
+            AND o.status = 'completed'
+	GROUP BY months
+)
+
+-- 9.Use Window Function get total revenue in 2024
+SELECT 
+	months, 
+	SUM(month_revenue) OVER (ORDER BY months) AS total_revenue_in_2024
+FROM monthly_revenue
