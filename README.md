@@ -27,4 +27,5 @@ A self-directed SQL practice project built on an AI-generated simulated e-commer
 - **Stored procedures** — parameterised order lookup and order placement  
 - **Triggers** — automatic stock deduction on insert, stock restoration on order cancellation  
 - **Transactions** — `START TRANSACTION` / `ROLLBACK` with trigger verification
+- **Window functions** — such as `SUM() OVER` for cumulative totals
 
